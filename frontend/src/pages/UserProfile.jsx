@@ -3,6 +3,7 @@ import { useSelector, useDispatch } from "react-redux";
 import { useNavigate } from "react-router-dom";
 import { toast } from "react-toastify";
 import { logout, setUser } from "../redux/slices/authSlice";
+import { clearCartAPI } from "../redux/slices/cartSlice";
 import {
   Person,
   Envelope,
@@ -133,6 +134,7 @@ const UserProfile = () => {
   };
 
   const handleLogout = () => {
+    dispatch(clearCartAPI());
     dispatch(logout());
     toast.success("Logged out successfully");
     navigate("/login");

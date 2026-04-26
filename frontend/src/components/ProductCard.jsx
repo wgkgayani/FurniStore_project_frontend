@@ -1,24 +1,50 @@
 import React from "react";
 import { Link } from "react-router-dom";
-import { useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { toast } from "react-toastify";
-import { addToCart } from "../redux/slices/cartSlice";
+import { addToCart, saveCartToAPI } from "../redux/slices/cartSlice";
 import { Star, StarFill, Cart } from "react-bootstrap-icons";
 
 const ProductCard = ({ product }) => {
   const dispatch = useDispatch();
+  const { token } = useSelector((state) => state.auth);
+  const cartItems = useSelector((state) => state.cart.items);
 
-  const handleAddToCart = () => {
-    dispatch(
-      addToCart({
-        productId: product.productId,
-        name: product.name,
-        price: product.price,
-        labelledPrice: product.labelledPrice,
-        image: product.images?.[0] || "",
-        quantity: 1,
-      }),
-    );
+  const handleAddToCart = async () => {
+    const newItem = {
+      productId: product.productId,
+      name: product.name,
+      price: product.price,
+      labelledPrice: product.labelledPrice,
+      image: product.images?.[0] || "",
+      quantity: 1,
+    };
+
+    dispatch(addToCart(newItem));
+
+    // Save cart to API if user is logged in
+    if (token) {
+      // Check if item already exists in cart
+      const existingItem = cartItems.find(
+        (item) => item.productId === product.productId,
+      );
+
+      let updatedCart;
+      if (existingItem) {
+        // Item exists, increase quantity
+        updatedCart = cartItems.map((item) =>
+          item.productId === product.productId
+            ? { ...item, quantity: item.quantity + 1 }
+            : item,
+        );
+      } else {
+        // Item doesn't exist, add it
+        updatedCart = [...cartItems, newItem];
+      }
+
+      dispatch(saveCartToAPI(updatedCart));
+    }
+
     toast.success("Added to cart!");
   };
 

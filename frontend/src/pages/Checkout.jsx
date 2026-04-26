@@ -3,7 +3,7 @@ import { useSelector, useDispatch } from "react-redux";
 import { useNavigate } from "react-router-dom";
 import { toast } from "react-toastify";
 import { orderAPI } from "../services/api";
-import { clearCart } from "../redux/slices/cartSlice";
+import { clearCart, clearCartAPI } from "../redux/slices/cartSlice";
 
 const Checkout = () => {
   const navigate = useNavigate();
@@ -89,6 +89,7 @@ const Checkout = () => {
 
       // Clear cart
       dispatch(clearCart());
+      dispatch(clearCartAPI());
 
       toast.success("Order placed successfully!");
 

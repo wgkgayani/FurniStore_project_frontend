@@ -171,3 +171,54 @@ export async function updateProfile(req, res) {
     return res.status(500).json({ message: "Failed to update profile" });
   }
 }
+
+export async function getCart(req, res) {
+  try {
+    const email = req.user.email;
+    const user = await User.findOne({ email });
+    if (!user) {
+      return res.status(404).json({ message: "User not found" });
+    }
+    return res.json({ cart: user.cart || [] });
+  } catch (err) {
+    console.error(err);
+    return res.status(500).json({ message: "Failed to fetch cart" });
+  }
+}
+
+export async function updateCart(req, res) {
+  try {
+    const email = req.user.email;
+    const { cart } = req.body;
+    
+    const user = await User.findOne({ email });
+    if (!user) {
+      return res.status(404).json({ message: "User not found" });
+    }
+    
+    user.cart = cart;
+    await user.save();
+    return res.json({ message: "Cart updated", cart: user.cart });
+  } catch (err) {
+    console.error(err);
+    return res.status(500).json({ message: "Failed to update cart" });
+  }
+}
+
+export async function clearCart(req, res) {
+  try {
+    const email = req.user.email;
+    const user = await User.findOne({ email });
+    if (!user) {
+      return res.status(404).json({ message: "User not found" });
+    }
+    
+    user.cart = [];
+    await user.save();
+    return res.json({ message: "Cart cleared" });
+  } catch (err) {
+    console.error(err);
+    return res.status(500).json({ message: "Failed to clear cart" });
+  }
+}
+

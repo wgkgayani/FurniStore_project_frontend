@@ -2,6 +2,7 @@ import React, { useState, useEffect } from "react";
 import { Link, useNavigate, useLocation } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
 import { login, clearError } from "../redux/slices/authSlice";
+import { fetchCart } from "../redux/slices/cartSlice";
 import { toast } from "react-toastify";
 import {
   Lock,
@@ -71,6 +72,7 @@ const Login = () => {
 
     if (!result.error) {
       toast.success("Login successful!");
+      dispatch(fetchCart());
       setLoginSuccess(true);
     }
   };

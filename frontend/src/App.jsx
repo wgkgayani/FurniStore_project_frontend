@@ -1,9 +1,11 @@
-import React from "react";
+import React, { useEffect } from "react";
 import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
+import { useSelector, useDispatch } from "react-redux";
 import { ToastContainer } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import "bootstrap/dist/css/bootstrap.min.css";
 import "./App.css";
+import { fetchCart } from "./redux/slices/cartSlice";
 
 // Import Components
 import Navbar from "./components/Navbar";
@@ -30,12 +32,61 @@ import AdminUsers from "./pages/admin/AdminUsers";
 import AdminCategories from "./pages/admin/AdminCategories";
 
 function App() {
+  const dispatch = useDispatch();
+  const { token } = useSelector((state) => state.auth);
+
+  useEffect(() => {
+    if (token) {
+      dispatch(fetchCart());
+    }
+  }, [token, dispatch]);
+
   return (
     <Router>
       <div className="App">
         <Navbar />
         <div className="main-content">
           <Routes>
+            {/* Admin Routes - Protected */}
+            <Route
+              path="/admin/*"
+              element={
+                <ProtectedRoute>
+                  <AdminLayout />
+                </ProtectedRoute>
+              }
+            >
+              <Route index element={<AdminDashboard />} />
+              <Route path="products" element={<AdminProducts />} />
+              <Route path="orders" element={<AdminOrders />} />
+              <Route path="users" element={<AdminUsers />} />
+              <Route path="categories" element={<AdminCategories />} />
+            </Route>
+
+            {/* Public Routes */}
+            <Route path="/" element={<Home />} />
+            <Route path="/products" element={<Products />} />
+            <Route path="/product/:id" element={<ProductDetail />} />
+            <Route path="/cart" element={<Cart />} />
+            <Route path="/checkout" element={<Checkout />} />
+            <Route path="/login" element={<Login />} />
+            <Route path="/register" element={<Register />} />
+            <Route path="/forgot-password" element={<ForgotPassword />} />
+            <Route path="/reset-password/:token" element={<ResetPassword />} />
+            <Route path="/profile" element={<UserProfile />} />
+            <Route path="/orders" element={<Orders />} />
+            <Route
+              path="/*"
+              element={<div className="text-center py-5">Page Not Found</div>}
+            />
+          </Routes>
+        </div>
+        <Footer />
+        <ToastContainer position="bottom-right" />
+      </div>
+    </Router>
+  );
+}
             {/* Admin Routes - Protected */}
             <Route
               path="/admin/*"

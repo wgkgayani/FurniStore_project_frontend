@@ -40,6 +40,15 @@ const userSchema = mongoose.Schema({
   resetPasswordExpires: {
     type: Date,
   },
+  cart: [
+    {
+      productId: String,
+      name: String,
+      price: Number,
+      image: String,
+      quantity: Number,
+    },
+  ],
 });
 
 const User = mongoose.model("users", userSchema); // to connect to users collection

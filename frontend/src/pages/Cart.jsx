@@ -5,6 +5,7 @@ import {
   removeFromCart,
   updateQuantity,
   clearCart,
+  saveCartToAPI,
 } from "../redux/slices/cartSlice";
 import {
   Trash,
@@ -32,14 +33,33 @@ const Cart = () => {
     if (newQuantity < 1) {
       dispatch(removeFromCart(productId));
       toast.info("Item removed from cart");
+      // Save updated cart to API if user is logged in
+      if (token) {
+        const updatedCart = cartItems.filter((item) => item.productId !== productId);
+        dispatch(saveCartToAPI(updatedCart));
+      }
     } else {
       dispatch(updateQuantity({ productId, quantity: newQuantity }));
+      // Save updated cart to API if user is logged in
+      if (token) {
+        const updatedCart = cartItems.map((item) =>
+          item.productId === productId
+            ? { ...item, quantity: newQuantity }
+            : item,
+        );
+        dispatch(saveCartToAPI(updatedCart));
+      }
     }
   };
 
   const handleRemoveItem = (productId) => {
     dispatch(removeFromCart(productId));
     toast.info("Item removed from cart");
+    // Save updated cart to API if user is logged in
+    if (token) {
+      const updatedCart = cartItems.filter((item) => item.productId !== productId);
+      dispatch(saveCartToAPI(updatedCart));
+    }
   };
 
   const handleCheckout = () => {
