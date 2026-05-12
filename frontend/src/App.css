@@ -39,6 +39,37 @@ body {
   border-color: #95a5a6;
 }
 
+/* Custom Button Styles */
+.btn-outline-primary {
+  color: #8d6e63;
+  border-color: #8d6e63;
+}
+
+.btn-outline-primary:hover,
+.btn-outline-primary:active,
+.btn-outline-primary:focus {
+  background-color: #8d6e63;
+  border-color: #8d6e63;
+  color: #fff;
+}
+
+.btn-outline-success {
+  color: #8d6e63;
+  border-color: #8d6e63;
+}
+
+.btn-outline-success:hover,
+.btn-outline-success:active,
+.btn-outline-success:focus {
+  background-color: #8d6e63;
+  border-color: #8d6e63;
+  color: #fff;
+}
+
+.btn:focus {
+  box-shadow: 0 0 0 0.2rem rgba(141, 110, 99, 0.25);
+}
+
 /* Cards */
 .card {
   border: none;
@@ -83,8 +114,18 @@ body {
 /* Navbar */
 .navbar-brand {
   font-weight: 700;
-  font-size: 1.5rem;
+  font-size: 1.25rem;
   color: #2c3e50 !important;
+  font-family: "Georgia", "Garamond", serif;
+  letter-spacing: 1px;
+  text-transform: capitalize;
+}
+
+.navbar-brand .text-primary {
+  color: #4e342e !important;
+  font-weight: 800;
+  font-style: italic;
+  letter-spacing: 2px;
 }
 
 /* Product Grid */
