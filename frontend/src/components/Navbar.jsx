@@ -45,7 +45,7 @@ const Navbar = () => {
         </button>
 
         <div className="collapse navbar-collapse" id="navbarNav">
-          <ul className="navbar-nav me-auto">
+          <ul className="navbar-nav ms-auto">
             <li className="nav-item">
               <Link className="nav-link" to="/">
                 Home
