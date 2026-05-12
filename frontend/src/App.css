@@ -114,8 +114,18 @@ body {
 /* Navbar */
 .navbar-brand {
   font-weight: 700;
-  font-size: 1.5rem;
+  font-size: 1.25rem;
   color: #2c3e50 !important;
+  font-family: "Georgia", "Garamond", serif;
+  letter-spacing: 1px;
+  text-transform: capitalize;
+}
+
+.navbar-brand .text-primary {
+  color: #4e342e !important;
+  font-weight: 800;
+  font-style: italic;
+  letter-spacing: 2px;
 }
 
 /* Product Grid */
