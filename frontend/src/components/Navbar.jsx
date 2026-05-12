@@ -83,10 +83,18 @@ const Navbar = () => {
 
             {token ? (
               <div className="d-flex align-items-center gap-2">
-                <Link to="/profile" className="btn btn-outline-secondary">
+                <Link to="/profile" className="btn btn-outline-primary">
                   <Person className="me-2" />
                   {user?.firstName || "Profile"}
                 </Link>
+                <button
+                  className="btn btn-outline-primary"
+                  onClick={handleLogout}
+                  title="Logout"
+                >
+                  <BoxArrowRight className="me-2" />
+                  Logout
+                </button>
               </div>
             ) : (
               <>
