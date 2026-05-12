@@ -209,6 +209,41 @@ body {
   margin: 30px 0;
 }
 
+/* Featured Products Section */
+.featured-products h2 {
+  position: relative;
+  display: inline-block;
+}
+
+.featured-products h2::after {
+  content: "";
+  position: absolute;
+  bottom: -8px;
+  left: 0;
+  width: 100%;
+  height: 3px;
+  background: linear-gradient(90deg, #8d6e63 0%, #4e342e 100%);
+  border-radius: 2px;
+}
+
+.featured-product-card {
+  transition: all 0.4s cubic-bezier(0.34, 1.56, 0.64, 1);
+}
+
+.featured-product-card:hover {
+  transform: translateY(-12px);
+}
+
+.featured-product-card .card {
+  box-shadow: 0 8px 20px rgba(141, 110, 99, 0.15);
+  border: 1px solid rgba(141, 110, 99, 0.1);
+}
+
+.featured-product-card:hover .card {
+  box-shadow: 0 16px 40px rgba(141, 110, 99, 0.25);
+  border-color: #8d6e63;
+}
+
 /* Cart Items */
 .cart-item {
   background: white;
@@ -224,6 +259,40 @@ body {
   justify-content: center;
   align-items: center;
   height: 300px;
+}
+
+/* Features Section */
+.features-section {
+  background: white;
+  padding: 40px 0;
+}
+
+.features-section .text-center {
+  padding: 2rem !important;
+  border-radius: 12px;
+  transition: all 0.3s ease;
+  background: linear-gradient(135deg, #fff9f5 0%, #faf5f2 100%);
+  border: 1px solid rgba(141, 110, 99, 0.1);
+}
+
+.features-section .text-center:hover {
+  transform: translateY(-8px);
+  box-shadow: 0 12px 30px rgba(141, 110, 99, 0.2) !important;
+  border-color: #8d6e63;
+}
+
+.features-section .text-center svg {
+  color: #8d6e63 !important;
+  transition: transform 0.3s ease;
+}
+
+.features-section .text-center:hover svg {
+  transform: scale(1.2) rotate(5deg);
+}
+
+.features-section h5 {
+  color: #4e342e;
+  font-weight: 700;
 }
 
 /* Advertisement Section */

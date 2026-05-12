@@ -11,6 +11,25 @@ import {
 } from "react-bootstrap-icons";
 
 const Home = () => {
+  const [featuredProducts, setFeaturedProducts] = useState([]);
+  const [loading, setLoading] = useState(true);
+
+  useEffect(() => {
+    fetchFeaturedProducts();
+  }, []);
+
+  const fetchFeaturedProducts = async () => {
+    try {
+      setLoading(true);
+      const response = await productAPI.getProducts();
+      setFeaturedProducts(response.data.slice(0, 4));
+    } catch (error) {
+      console.error("Error fetching featured products:", error);
+    } finally {
+      setLoading(false);
+    }
+  };
+
   return (
     <div className="home">
       {/* Hero Section */}
@@ -45,10 +64,12 @@ const Home = () => {
       </section>
 
       {/* Featured Products */}
-      <section className="featured-products mb-5">
+      <section className="featured-products mb-5 py-2">
         <div className="container">
-          <div className="d-flex justify-content-between align-items-center mb-4">
-            <h2 className="fw-bold">Featured Products</h2>
+          <div className="d-flex justify-content-between align-items-center mb-2">
+            <h2 className="fw-bold mb-0" style={{ color: "#2c3e50" }}>
+              Featured Products
+            </h2>
           </div>
         </div>
       </section>
