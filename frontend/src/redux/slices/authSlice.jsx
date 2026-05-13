@@ -3,6 +3,32 @@ import axios from "axios";
 
 const API_URL = "http://localhost:3000";
 
+// Helper function to decode JWT token and extract user info
+const decodeToken = (token) => {
+  try {
+    const base64Url = token.split(".")[1];
+    const base64 = base64Url.replace(/-/g, "+").replace(/_/g, "/");
+    const jsonPayload = decodeURIComponent(
+      atob(base64)
+        .split("")
+        .map((c) => "%" + ("00" + c.charCodeAt(0).toString(16)).slice(-2))
+        .join(""),
+    );
+    return JSON.parse(jsonPayload);
+  } catch (error) {
+    return null;
+  }
+};
+
+// Helper function to get initial user from stored token
+const getInitialUser = () => {
+  const token = localStorage.getItem("token");
+  if (token) {
+    return decodeToken(token);
+  }
+  return null;
+};
+
 // Async thunks
 export const login = createAsyncThunk(
   "auth/login",
@@ -37,7 +63,7 @@ export const register = createAsyncThunk(
 const authSlice = createSlice({
   name: "auth",
   initialState: {
-    user: null,
+    user: getInitialUser(),
     token: localStorage.getItem("token"),
     loading: false,
     error: null,
@@ -64,18 +90,10 @@ const authSlice = createSlice({
       .addCase(login.fulfilled, (state, action) => {
         state.loading = false;
         state.token = action.payload.token;
-        // Decode token to get user info (you might want to verify with backend)
+        // Decode token to get user info
         const token = action.payload.token;
         if (token) {
-          const base64Url = token.split(".")[1];
-          const base64 = base64Url.replace(/-/g, "+").replace(/_/g, "/");
-          const jsonPayload = decodeURIComponent(
-            atob(base64)
-              .split("")
-              .map((c) => "%" + ("00" + c.charCodeAt(0).toString(16)).slice(-2))
-              .join(""),
-          );
-          state.user = JSON.parse(jsonPayload);
+          state.user = decodeToken(token);
         }
       })
       .addCase(login.rejected, (state, action) => {
@@ -98,4 +116,3 @@ const authSlice = createSlice({
 
 export const { logout, clearError, setUser } = authSlice.actions;
 export default authSlice.reducer;
-
