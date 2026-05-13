@@ -535,15 +535,8 @@ body {
 }
 
 /* Admin Buttons */
-.btn-primary {
-  background: linear-gradient(135deg, #8d6e63 0%, #4e342e 100%);
-  border: none;
-  box-shadow: 0 4px 10px rgba(141, 110, 99, 0.4);
-}
-
 .btn-primary:hover {
   transform: translateY(-2px);
-  box-shadow: 0 6px 15px rgba(141, 110, 99, 0.5);
 }
 
 /* Admin Badges */
@@ -551,6 +544,29 @@ body {
   padding: 0.5rem 0.75rem;
   font-weight: 500;
   letter-spacing: 0.3px;
+}
+
+/* User Profile Page Styling */
+.list-group-item {
+  border-color: #e0d5ce;
+  font-weight: 500;
+  transition: all 0.3s ease;
+}
+
+.list-group-item-action:hover {
+  background-color: #f5efe6;
+  color: #d4ccc4;
+  border-color: #d4ccc4;
+}
+
+.list-group-item-action.active {
+  background-color: #8d6e63;
+  border-color: #8d6e63;
+  color: #fff;
+}
+
+.list-group-item-action.active:hover {
+  background-color: #8d6e63;
 }
 
 /* Animations */
