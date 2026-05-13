@@ -112,6 +112,8 @@ const Products = () => {
               <option value="Beds">Beds</option>
               <option value="Tables">Tables</option>
               <option value="Chairs">Chairs</option>
+              <option value="Bookshelf">Bookshelf</option>
+              <option value="TV Console">TV Console</option>
             </select>
           </div>
           <div className="col-md-4">

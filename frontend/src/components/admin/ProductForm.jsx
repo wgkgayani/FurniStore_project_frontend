@@ -222,6 +222,8 @@ const ProductForm = ({ product, onSubmit, onClose }) => {
                     <option value="chair">Chairs</option>
                     <option value="wardrobe">Wardrobes</option>
                     <option value="desk">Desks</option>
+                    <option value="bookshelf">Bookshelf</option>
+                    <option value="tv-console">TV Console</option>
                   </select>
                   {errors.category && (
                     <div className="invalid-feedback">{errors.category}</div>
