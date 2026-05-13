@@ -10,6 +10,7 @@ import {
   Truck,
   XCircle,
   Search,
+  ClockHistory,
 } from "react-bootstrap-icons";
 
 const Orders = () => {
@@ -18,6 +19,9 @@ const Orders = () => {
   const [orders, setOrders] = useState([]);
   const [loading, setLoading] = useState(true);
   const [filter, setFilter] = useState("all");
+  const [showHistory, setShowHistory] = useState(false);
+  const [selectedOrderHistory, setSelectedOrderHistory] = useState(null);
+  const [historyLoading, setHistoryLoading] = useState(false);
 
   useEffect(() => {
     if (!token) {
@@ -38,6 +42,20 @@ const Orders = () => {
       toast.error("Failed to load orders");
     } finally {
       setLoading(false);
+    }
+  };
+
+  const handleViewHistory = async () => {
+    try {
+      setHistoryLoading(true);
+      const response = await orderAPI.getCancelledOrders();
+      setSelectedOrderHistory(response.data);
+      setShowHistory(true);
+    } catch (error) {
+      console.error("Error fetching history:", error);
+      toast.error("Failed to load order history");
+    } finally {
+      setHistoryLoading(false);
     }
   };
 
@@ -75,10 +93,12 @@ const Orders = () => {
     }
   };
 
+  const activeOrders = orders.filter((order) => order.status !== "cancelled");
+
   const filteredOrders =
     filter === "all"
-      ? orders
-      : orders.filter((order) => order.status === filter);
+      ? activeOrders
+      : activeOrders.filter((order) => order.status === filter);
 
   const formatDate = (dateString) => {
     const date = new Date(dateString);
@@ -86,6 +106,17 @@ const Orders = () => {
       year: "numeric",
       month: "short",
       day: "numeric",
+    });
+  };
+
+  const formatDateTime = (dateString) => {
+    const date = new Date(dateString);
+    return date.toLocaleString("en-US", {
+      year: "numeric",
+      month: "short",
+      day: "numeric",
+      hour: "2-digit",
+      minute: "2-digit",
     });
   };
 
@@ -104,9 +135,15 @@ const Orders = () => {
   return (
     <div className="container py-5">
       <div className="row mb-4">
-        <div className="col-12">
-          <h1 className="fw-bold">My Orders</h1>
-          <p className="text-muted">Track and manage your orders</p>
+        <div className="col-12 d-flex justify-content-between align-items-center">
+          <div>
+            <h1 className="fw-bold">My Orders</h1>
+            <p className="text-muted">Track and manage your orders</p>
+          </div>
+          <button className="btn btn-info" onClick={handleViewHistory}>
+            <ClockHistory className="me-2" />
+            History
+          </button>
         </div>
       </div>
 
@@ -119,7 +156,7 @@ const Orders = () => {
               className={`btn ${filter === "all" ? "btn-primary" : "btn-outline-primary"}`}
               onClick={() => setFilter("all")}
             >
-              All Orders ({orders.length})
+              All Orders ({activeOrders.length})
             </button>
             <button
               type="button"
@@ -267,6 +304,120 @@ const Orders = () => {
                 </div>
               </div>
             ))}
+          </div>
+        </div>
+      )}
+
+      {/* Order History Modal */}
+      {showHistory && selectedOrderHistory && (
+        <div
+          className="modal d-block"
+          style={{ backgroundColor: "rgba(0, 0, 0, 0.5)" }}
+        >
+          <div className="modal-dialog modal-lg modal-dialog-scrollable">
+            <div className="modal-content">
+              <div
+                className="modal-header"
+                style={{ backgroundColor: "#8d6e63", color: "white" }}
+              >
+                <h5 className="modal-title">
+                  Cancelled Orders History (
+                  {selectedOrderHistory.totalCancelled || 0})
+                </h5>
+                <button
+                  type="button"
+                  className="btn-close btn-close-white"
+                  onClick={() => setShowHistory(false)}
+                ></button>
+              </div>
+              <div className="modal-body">
+                {historyLoading ? (
+                  <div className="spinner-border text-primary" role="status">
+                    <span className="visually-hidden">Loading...</span>
+                  </div>
+                ) : selectedOrderHistory.cancelledOrders &&
+                  selectedOrderHistory.cancelledOrders.length > 0 ? (
+                  <div>
+                    <p className="text-muted mb-4">
+                      Total cancelled orders:{" "}
+                      {selectedOrderHistory.totalCancelled}
+                    </p>
+                    {selectedOrderHistory.cancelledOrders.map(
+                      (cancelled, index) => (
+                        <div key={index} className="card mb-3 border-danger">
+                          <div className="card-body">
+                            <div className="row mb-3">
+                              <div className="col-md-6">
+                                <p className="mb-1">
+                                  <strong>Order ID:</strong> {cancelled.orderId}
+                                </p>
+                                <small className="text-muted">
+                                  Original order date:{" "}
+                                  {formatDate(cancelled.orderDate)}
+                                </small>
+                              </div>
+                              <div className="col-md-6">
+                                <p className="mb-1">
+                                  <strong>Cancelled on:</strong>{" "}
+                                  {formatDateTime(cancelled.changedAt)}
+                                </p>
+                              </div>
+                            </div>
+                            {cancelled.reason && (
+                              <p className="mb-3 p-2 bg-light rounded">
+                                <strong>Reason:</strong> {cancelled.reason}
+                              </p>
+                            )}
+                            <hr />
+                            <h6 className="fw-bold mb-3">Products in Order:</h6>
+                            {cancelled.products &&
+                              cancelled.products.map((product, pidx) => (
+                                <div
+                                  key={pidx}
+                                  className="d-flex justify-content-between mb-2 pb-2 border-bottom"
+                                >
+                                  <div>
+                                    <p className="mb-0">
+                                      {product.productInfo?.name}
+                                    </p>
+                                    <small className="text-muted">
+                                      Qty: {product.quantity}
+                                    </small>
+                                  </div>
+                                  <span className="fw-bold">
+                                    $
+                                    {(
+                                      product.productInfo?.price *
+                                      product.quantity
+                                    )?.toFixed(2)}
+                                  </span>
+                                </div>
+                              ))}
+                            <div className="d-flex justify-content-between fw-bold mt-3 pt-3 border-top">
+                              <span>Order Total:</span>
+                              <span>${cancelled.total?.toFixed(2)}</span>
+                            </div>
+                          </div>
+                        </div>
+                      ),
+                    )}
+                  </div>
+                ) : (
+                  <div className="text-center py-5">
+                    <p className="text-muted">No cancelled orders in history</p>
+                  </div>
+                )}
+              </div>
+              <div className="modal-footer">
+                <button
+                  type="button"
+                  className="btn btn-secondary"
+                  onClick={() => setShowHistory(false)}
+                >
+                  Close
+                </button>
+              </div>
+            </div>
           </div>
         </div>
       )}

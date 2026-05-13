@@ -129,3 +129,159 @@ export async function getOrderById(req, res) {
     });
   }
 }
+
+export async function updateOrderStatus(req, res) {
+  try {
+    // Only admin can update order status
+    if (req.user?.role !== "admin") {
+      return res.status(403).json({
+        message: "Only admin can update order status",
+      });
+    }
+
+    const { orderId } = req.params;
+    const { status, reason } = req.body;
+
+    // Validate status
+    const validStatuses = [
+      "pending",
+      "processing",
+      "shipped",
+      "delivered",
+      "cancelled",
+    ];
+    if (!validStatuses.includes(status)) {
+      return res.status(400).json({
+        message: "Invalid status",
+      });
+    }
+
+    const order = await Order.findOne({ orderId });
+    if (!order) {
+      return res.status(404).json({
+        message: "Order not found",
+      });
+    }
+
+    const previousStatus = order.status;
+
+    // Add to status history
+    if (!order.statusHistory) {
+      order.statusHistory = [];
+    }
+
+    order.statusHistory.push({
+      status,
+      changedAt: new Date(),
+      previousStatus,
+      reason: reason || "",
+    });
+
+    // Update current status
+    order.status = status;
+    await order.save();
+
+    res.json({
+      message: "Order status updated successfully",
+      order,
+    });
+  } catch (error) {
+    res.status(500).json({
+      message: "Failed to update order status",
+      error: error.message,
+    });
+  }
+}
+
+export async function getOrderHistory(req, res) {
+  try {
+    const { orderId } = req.params;
+
+    const order = await Order.findOne({ orderId });
+    if (!order) {
+      return res.status(404).json({
+        message: "Order not found",
+      });
+    }
+
+    // Check authorization
+    if (order.email !== req.user?.email && req.user?.role !== "admin") {
+      return res.status(403).json({
+        message: "Unauthorized to view order history",
+      });
+    }
+
+    // Return status history with cancelled orders
+    const history = {
+      orderId: order.orderId,
+      currentStatus: order.status,
+      statusHistory: order.statusHistory || [],
+      cancelledOrders: (order.statusHistory || [])
+        .filter((h) => h.status === "cancelled")
+        .map((h) => ({
+          status: h.status,
+          changedAt: h.changedAt,
+          previousStatus: h.previousStatus,
+          reason: h.reason,
+          products: order.products,
+          total: order.total,
+          labelledTotal: order.labelledTotal,
+        })),
+    };
+
+    res.json(history);
+  } catch (error) {
+    res.status(500).json({
+      message: "Failed to fetch order history",
+      error: error.message,
+    });
+  }
+}
+
+export async function getUserCancelledOrders(req, res) {
+  try {
+    // Get all orders for the user
+    const orders = await Order.find({ email: req.user?.email });
+
+    if (!orders) {
+      return res.status(404).json({
+        message: "No orders found",
+      });
+    }
+
+    // Extract all cancelled orders from all user orders
+    const allCancelledOrders = [];
+
+    orders.forEach((order) => {
+      if (order.statusHistory && order.statusHistory.length > 0) {
+        order.statusHistory
+          .filter((h) => h.status === "cancelled")
+          .forEach((h) => {
+            allCancelledOrders.push({
+              orderId: order.orderId,
+              status: h.status,
+              changedAt: h.changedAt,
+              previousStatus: h.previousStatus,
+              reason: h.reason,
+              products: order.products,
+              total: order.total,
+              labelledTotal: order.labelledTotal,
+              orderDate: order.date,
+            });
+          });
+      }
+    });
+
+    res.json({
+      totalCancelled: allCancelledOrders.length,
+      cancelledOrders: allCancelledOrders.sort(
+        (a, b) => new Date(b.changedAt) - new Date(a.changedAt),
+      ),
+    });
+  } catch (error) {
+    res.status(500).json({
+      message: "Failed to fetch cancelled orders",
+      error: error.message,
+    });
+  }
+}

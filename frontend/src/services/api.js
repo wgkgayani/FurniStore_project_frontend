@@ -35,9 +35,11 @@ export const orderAPI = {
   create: (order) => api.post("/orders", order),
   getOrders: () => api.get("/orders"),
   getOrderById: (id) => api.get(`/orders/${id}`),
+  updateStatus: (id, data) => api.put(`/orders/${id}/status`, data),
+  getHistory: (id) => api.get(`/orders/${id}/history`),
+  getCancelledOrders: () => api.get("/orders/cancelled"),
   // Admin APIs
   getAllOrders: () => api.get("/admin/orders"), // Admin only
-  updateStatus: (id, status) => api.patch(`/admin/orders/${id}`, status),
 };
 
 export const authAPI = {
