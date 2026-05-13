@@ -56,6 +56,20 @@ const orderSchema = mongoose.Schema({
     type: Date,
     default: Date.now,
   },
+  statusHistory: [
+    {
+      status: {
+        type: String,
+        enum: ["pending", "processing", "shipped", "delivered", "cancelled"],
+      },
+      changedAt: {
+        type: Date,
+        default: Date.now,
+      },
+      previousStatus: String,
+      reason: String,
+    },
+  ],
 });
 
 const Order = mongoose.model("orders", orderSchema);
