@@ -27,16 +27,51 @@ body {
   border-color: #8d6e63;
   padding: 10px 25px;
   font-weight: 600;
+  color: #fff;
 }
 
 .btn-primary:hover {
-  background-color: #1a252f;
-  border-color: #1a252f;
+  background-color: #4e342e;
+  border-color: #4e342e;
+  color: #fff;
+}
+
+button.btn-primary:active,
+button.btn-primary.active,
+a.btn.btn-primary:active,
+a.btn.btn-primary.active,
+.btn-primary:not(:disabled):not(.disabled):active,
+.btn-primary:not(:disabled):not(.disabled).active,
+.btn-primary:focus {
+  background-color: #4e342e;
+  border-color: #4e342e;
+  color: #fff;
+  box-shadow: 0 0 0 0.25rem rgba(141, 110, 99, 0.5);
 }
 
 .btn-secondary {
-  background-color: #95a5a6;
-  border-color: #95a5a6;
+  background-color: #8d6e63;
+  border-color: #8d6e63;
+  color: #fff;
+}
+
+.btn-secondary:hover {
+  background-color: #4e342e;
+  border-color: #4e342e;
+  color: #fff;
+}
+
+button.btn-secondary:active,
+button.btn-secondary.active,
+a.btn.btn-secondary:active,
+a.btn.btn-secondary.active,
+.btn-secondary:not(:disabled):not(.disabled):active,
+.btn-secondary:not(:disabled):not(.disabled).active,
+.btn-secondary:focus {
+  background-color: #4e342e;
+  border-color: #4e342e;
+  color: #fff;
+  box-shadow: 0 0 0 0.25rem rgba(141, 110, 99, 0.5);
 }
 
 /* Custom Button Styles */
@@ -53,6 +88,18 @@ body {
   color: #fff;
 }
 
+button.btn-outline-primary.active,
+button.btn-outline-primary:active,
+a.btn.btn-outline-primary.active,
+a.btn.btn-outline-primary:active,
+.btn-outline-primary:not(:disabled):not(.disabled):active,
+.btn-outline-primary:not(:disabled):not(.disabled).active {
+  background-color: #4e342e;
+  border-color: #4e342e;
+  color: #fff;
+  box-shadow: 0 0 0 0.25rem rgba(141, 110, 99, 0.5);
+}
+
 .btn-outline-success {
   color: #8d6e63;
   border-color: #8d6e63;
@@ -66,8 +113,23 @@ body {
   color: #fff;
 }
 
-.btn:focus {
-  box-shadow: 0 0 0 0.2rem rgba(141, 110, 99, 0.25);
+button.btn-outline-success.active,
+button.btn-outline-success:active,
+a.btn.btn-outline-success.active,
+a.btn.btn-outline-success:active,
+.btn-outline-success:not(:disabled):not(.disabled):active,
+.btn-outline-success:not(:disabled):not(.disabled).active {
+  background-color: #4e342e;
+  border-color: #4e342e;
+  color: #fff;
+  box-shadow: 0 0 0 0.25rem rgba(141, 110, 99, 0.5);
+}
+
+button:focus,
+button:active,
+a.btn:focus,
+a.btn:active {
+  box-shadow: 0 0 0 0.25rem rgba(141, 110, 99, 0.5);
 }
 
 /* Cards */

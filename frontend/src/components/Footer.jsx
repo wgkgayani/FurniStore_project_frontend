@@ -75,11 +75,11 @@ const Footer = () => {
             <ul className="list-unstyled">
               <li className="mb-2">
                 <GeoAlt className="me-2" />
-                123 Furniture Street, City, Country
+                123 Furniture Street, colombo, Sri Lanka
               </li>
               <li className="mb-2">
                 <Phone className="me-2" />
-                +94 77 123 4567
+                +94 76 825 1792
               </li>
               <li className="mb-2">
                 <Envelope className="me-2" />
