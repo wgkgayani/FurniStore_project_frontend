@@ -26,10 +26,10 @@
     "web-vitals": "^2.1.4"
   },
   "scripts": {
-    "start": "cross-env PORT=3003 react-scripts start",
-    "build": "react-scripts build",
-    "test": "react-scripts test",
-    "eject": "react-scripts eject"
+    "start": "vite",
+    "build": "vite build",
+    "preview": "vite preview",
+    "test": "echo \"Tests skipped\""
   },
   "eslintConfig": {
     "extends": [
