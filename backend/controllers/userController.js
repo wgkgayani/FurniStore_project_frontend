@@ -37,12 +37,12 @@ export function createUser(req, res) {
     .save()
     .then(() => {
       res.json({
-        message: "User ctrated successfuly",
+        message: "User created successfully",
       });
     })
     .catch(() => {
       res.json({
-        massege: "Error saving user data",
+        message: "Error saving user data",
       });
     });
 }
@@ -56,7 +56,7 @@ export function loginUser(req, res) {
 
     if (user == null) {
       res.status(404).json({
-        massege: "User not found",
+        message: "User not found",
       });
     } else {
       const isPasswordCorrect = bcrypt.compareSync(password, user.password);
@@ -70,7 +70,7 @@ export function loginUser(req, res) {
             lastName: user.lastName,
             img: user.img,
           },
-          "first.mern.course.encript.password",
+          process.env.JWT_SECRET,
         );
 
         res.json({
@@ -190,12 +190,12 @@ export async function updateCart(req, res) {
   try {
     const email = req.user.email;
     const { cart } = req.body;
-    
+
     const user = await User.findOne({ email });
     if (!user) {
       return res.status(404).json({ message: "User not found" });
     }
-    
+
     user.cart = cart;
     await user.save();
     return res.json({ message: "Cart updated", cart: user.cart });
@@ -212,7 +212,7 @@ export async function clearCart(req, res) {
     if (!user) {
       return res.status(404).json({ message: "User not found" });
     }
-    
+
     user.cart = [];
     await user.save();
     return res.json({ message: "Cart cleared" });
@@ -221,4 +221,3 @@ export async function clearCart(req, res) {
     return res.status(500).json({ message: "Failed to clear cart" });
   }
 }
-
