@@ -45,13 +45,26 @@ const Register = () => {
       return false;
     }
 
-    if (!formData.email.includes("@")) {
-      toast.error("Please enter a valid email");
+    // Better email validation
+    const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+    if (!emailRegex.test(formData.email)) {
+      toast.error("Please enter a valid email address");
       return false;
     }
 
-    if (formData.password.length < 6) {
-      toast.error("Password must be at least 6 characters");
+    // Password strength validation
+    if (formData.password.length < 8) {
+      toast.error("Password must be at least 8 characters");
+      return false;
+    }
+
+    if (!/[A-Z]/.test(formData.password)) {
+      toast.error("Password must contain at least one uppercase letter");
+      return false;
+    }
+
+    if (!/[0-9]/.test(formData.password)) {
+      toast.error("Password must contain at least one number");
       return false;
     }
 

@@ -34,7 +34,7 @@ app.listen(PORT, () => {
 // Add CORS middleware at the top
 app.use(
   cors({
-    origin: "http://localhost:3003", // Your frontend URL
+    origin: process.env.CORS_ORIGIN || "http://localhost:3003", // Your frontend URL
     credentials: true,
   }),
 );
@@ -56,10 +56,5 @@ app.use("/orders", orderRouter);
 app.use("/admin", adminRouter); // Add this
 //
 //
-
-app.listen(3000, () => {
-  // create one time funtion
-  console.log("Server is running on port 3000");
-}); //to run backend code
 
 //nodemon - to automatically restart server on code changes
