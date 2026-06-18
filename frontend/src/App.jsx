@@ -32,6 +32,9 @@ import AdminOrders from "./pages/admin/AdminOrders";
 import AdminUsers from "./pages/admin/AdminUsers";
 import AdminCategories from "./pages/admin/AdminCategories";
 
+//chat bot
+import FastBot from "./components/FastBot";
+
 function App() {
   const dispatch = useDispatch();
   const { token } = useSelector((state) => state.auth);
@@ -71,6 +74,7 @@ function App() {
     <Router>
       <div className="App">
         <Navbar />
+        <FastBot />
         <div className="main-content">
           <Routes>
             {/* Admin Routes - Protected */}
