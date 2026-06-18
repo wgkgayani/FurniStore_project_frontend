@@ -32,7 +32,7 @@ const Navbar = () => {
     <nav className="navbar navbar-expand-lg navbar-light bg-white shadow-sm">
       <div className="container">
         <Link className="navbar-brand fw-bold" to="/">
-          <span className="text-primary">Furni</span>Store
+          <span className="text-primary">Furniiiii</span>Store
         </Link>
 
         <button
