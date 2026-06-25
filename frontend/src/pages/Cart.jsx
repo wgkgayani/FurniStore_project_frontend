@@ -35,7 +35,9 @@ const Cart = () => {
       toast.info("Item removed from cart");
       // Save updated cart to API if user is logged in
       if (token) {
-        const updatedCart = cartItems.filter((item) => item.productId !== productId);
+        const updatedCart = cartItems.filter(
+          (item) => item.productId !== productId,
+        );
         dispatch(saveCartToAPI(updatedCart));
       }
     } else {
@@ -57,7 +59,9 @@ const Cart = () => {
     toast.info("Item removed from cart");
     // Save updated cart to API if user is logged in
     if (token) {
-      const updatedCart = cartItems.filter((item) => item.productId !== productId);
+      const updatedCart = cartItems.filter(
+        (item) => item.productId !== productId,
+      );
       dispatch(saveCartToAPI(updatedCart));
     }
   };
@@ -109,14 +113,12 @@ const Cart = () => {
                     style={{ height: "100px", objectFit: "cover" }}
                   />
                 </div>
-
                 <div className="col-md-4">
                   <h5 className="mb-1">{item.name}</h5>
                   <p className="text-muted small mb-0">
                     Product ID: {item.productId}
                   </p>
-                </div>
-
+                </div>{" "}
                 <div className="col-md-3">
                   <div className="d-flex align-items-center">
                     <button
@@ -140,7 +142,6 @@ const Cart = () => {
                     </button>
                   </div>
                 </div>
-
                 <div className="col-md-2">
                   <h5 className="mb-0">
                     ${(item.price * item.quantity).toFixed(2)}
@@ -149,7 +150,6 @@ const Cart = () => {
                     ${item.price.toFixed(2)} each
                   </small>
                 </div>
-
                 <div className="col-md-1">
                   <button
                     className="btn btn-outline-danger btn-sm"
