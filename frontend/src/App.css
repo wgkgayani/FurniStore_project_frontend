@@ -199,7 +199,7 @@ a.btn:active {
 .navbar {
   background: linear-gradient(135deg, #fff9f5 0%, #faf5f2 100%) !important;
   border-bottom: 2px solid #8d6e63;
-  padding: 1rem 0;
+  padding: 0.625rem 0;
 }
 
 .navbar-brand {
@@ -210,10 +210,31 @@ a.btn:active {
   letter-spacing: 1px;
   text-transform: capitalize;
   transition: all 0.3s ease;
+  padding: 0;
+  margin: 0;
+  line-height: 1;
 }
 
 .navbar-brand:hover {
-  transform: scale(1.05);
+  transform: scale(1.03);
+}
+
+.navbar-logo-wrap {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  height: 52px;
+  width: 185px;
+  overflow: hidden;
+  flex-shrink: 0;
+}
+
+.navbar-logo {
+  display: block;
+  height: 127px;
+  width: auto;
+  max-width: none;
+  object-fit: contain;
 }
 
 .navbar-brand .text-primary {

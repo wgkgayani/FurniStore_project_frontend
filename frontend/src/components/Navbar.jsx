@@ -31,8 +31,14 @@ const Navbar = () => {
   return (
     <nav className="navbar navbar-expand-lg navbar-light bg-white shadow-sm">
       <div className="container">
-        <Link className="navbar-brand fw-bold" to="/">
-          <span className="text-primary">Furni</span>Store
+        <Link className="navbar-brand d-flex align-items-center" to="/">
+          <span className="navbar-logo-wrap">
+            <img
+              src="/images/Blue_Modern_Electricity_Technology_Initial_Logo.png"
+              alt="FurniStore Logo"
+              className="navbar-logo"
+            />
+          </span>
         </Link>
 
         <button
